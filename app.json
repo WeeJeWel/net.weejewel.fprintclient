@@ -9,6 +9,12 @@
         "name": "Emile Nijssen",
         "email": "emile@athom.nl"
     },
+    "category": [ "security" ],
+    "description": "Connect Homey to node-fprint-server",
+    "images": {
+	    "large": "./assets/images/large.jpg",
+	    "small": "./assets/images/small.jpg"
+    },
     "drivers": [
 	    {
 		    "id": "fprint-server",
@@ -40,7 +46,11 @@
 		                }
 		            ]
 		        }
-		    ]
+		    ],
+		    "images": {
+			    "large": "./drivers/fprint-server/assets/images/large.jpg",
+			    "small": "./drivers/fprint-server/assets/images/small.jpg"
+		    }
 	    }
     ],
     "flow": {
