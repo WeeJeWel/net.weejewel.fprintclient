@@ -1,0 +1,12 @@
+{
+    "id": "net.weejewel.fprintclient",
+    "name": {
+        "en": "Fingerprint Client"
+    },
+    "version": "1.0.0",
+    "compatibility": "0.x || 1.x",
+    "author": {
+        "name": "Emile Nijssen",
+        "email": "emile@athom.nl"
+    }
+}
