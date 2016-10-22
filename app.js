@@ -1,9 +1,7 @@
 "use strict";
 
 function init() {
-	
-	Homey.log("Hello world!");
-	
+	console.log(`${Homey.manifest.id} running...`);
 }
 
 module.exports.init = init;

@@ -1,0 +1,36 @@
+<div class="form-group">
+	<label for="address">Server Address</label>
+
+	<span class="input-wrap">
+		<input type="text" id="address" placeholder="http://192.168.0.100:4444" />
+	</span>
+</div>
+
+<div class="form-group">
+	<span class="input-wrap">
+		<button class="button" id="save">
+			<i class="fa fa-floppy-o" aria-hidden="true"></i>
+			Save
+		</button>
+	</span>
+</div>
+
+<script type="text/javascript">
+$(function(){
+
+	$('#save').click(function(){
+		Homey.addDevice({
+			name	: 'Fingerprint Server',
+			data 	: {
+				id	: Math.random().toString(36).substr(2)
+			},
+			settings: {
+				address: $('#address').val()
+			}
+		}, function( err, result ){
+			if( err ) return Homey.alert(err.message || err.toString());
+			return Homey.done();
+		})
+	})
+})
+</script>

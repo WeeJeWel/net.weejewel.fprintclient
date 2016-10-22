@@ -8,5 +8,67 @@
     "author": {
         "name": "Emile Nijssen",
         "email": "emile@athom.nl"
+    },
+    "drivers": [
+	    {
+		    "id": "fprint-server",
+		    "class": "other",
+		    "capabilities": [],
+		    "name": {
+			    "en": "Fingerprint Server"
+		    },
+		    "pair": [
+			    {
+				    "id": "index"
+			    }
+		    ],
+		    "settings": [
+			    {
+                    "type": "group",
+                    "label": {
+                        "en": "Fingerprint Server"
+                    },
+                    "children": [
+		                {
+		                    "id": "address",
+		                    "type": "text",
+		                    "value": "",
+		                    "label": {
+		                        "en": "Address",
+		                        "nl": "Adres"
+		                    }
+		                }
+		            ]
+		        }
+		    ]
+	    }
+    ],
+    "flow": {
+	    "triggers": [
+		    {
+			    "id": "identify",
+			    "title": {
+				    "en": "A user has been identified"
+			    },
+			    "args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_id=fprint-server"
+					}
+			    ],
+			    "tokens": [
+				    {
+					    "name": "name",
+					    "title": {
+						    "en": "Name"
+					    },
+					    "example": {
+						    "en": "John Smith"
+					    }
+				    }
+			    ]
+		    }
+	    ]
     }
 }

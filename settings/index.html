@@ -1,0 +1,232 @@
+<!doctype html>
+<html>
+	<head>
+
+		<script type="text/javascript" src="/manager/webserver/assets/js/angular.js"></script>
+		<script type="text/javascript" src="/manager/webserver/assets/font/fontawesome/fontawesome.css"></script>
+
+		<style type="text/css">
+		input {
+			border-radius: 3px;
+		}
+
+		.devices {
+			list-style: none;
+		}
+			.device {
+				border: 1px solid #eee;
+				border-radius: 3px;
+				margin-bottom: 1em;
+			}
+				.device .title {
+					display: block;
+					padding: 1em;
+					background: #f9f9f9;
+					line-height: 2em;
+				}
+					.device .title > * {
+						display: inline-block;
+						vertical-align: middle;
+					}
+					.device .title .name {
+						font-weight: 400;
+					}
+					.device .title .icon {
+						width: 24px;
+						height: 24px;
+						background: black;
+						-webkit-mask-image: url(/app/net.weejewel.fprintclient/assets/icon.svg);
+						-webkit-mask-repeat: no-repeat;
+						-webkit-mask-size: cover;
+						margin-right: 10px;
+					}
+					.device .title .button {
+						float: right;
+					}
+				.device > p {
+					padding: 1em;
+				}
+
+		.users {
+			list-style: none;
+			margin-bottom: 0;
+		}
+			.user {
+				position: relative;
+				border-bottom: 1px solid #eee;
+				height: 60px;
+			}
+			.user:last-child {
+				border-bottom: none;
+			}
+				.user .name {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+				.user .icon {
+					position: absolute;
+					left: 1em;
+					top: 20px;
+					bottom: 20px;
+					width: 20px;
+					height: 20px;
+					font-size: 20px;
+					color: black;
+				}
+				.user .name {
+					position: absolute;
+					left: 55px;
+					top: 10px;
+					bottom: 10px;
+					font-size: 14px;
+					line-height: 40px;
+					font-weight: 300;
+				}
+				.user input.name {
+					top: 15px;
+					bottom: 15px;
+					line-height: 20px;
+				}
+				.user .buttons {
+					position: absolute;
+					right: 16px;
+					top: 16px;
+					font-size: 0;
+				}
+					.user button {
+						float: left;
+						box-sizing: border-box;
+						padding: 5px 10px;
+						margin-left: 5px;
+						opacity: 0;
+						visibility: hidden;
+					}
+					.user:hover button {
+						opacity: 1;
+						visibility: visible;
+					}
+		</style>
+
+	</head>
+	<body ng-app="fingerprintApp" ng-controller="fingerprintCtrl as fingerprint">
+
+		<p ng-show="devices.length < 1">
+			<span data-i18n="settings.no_devices"></span>
+		</p>
+
+		<ul class="devices" ng-show="devices.length > 0">
+			<li
+				class="device"
+				ng-repeat="device in devices"
+			>
+				<div class="title">
+					<span class="icon"></span>
+					<span class="name">{{device.name}}</span>
+
+					<button class="button" ng-click="createUser( device )">
+						<i class="fa fa-user-plus" aria-hidden="true"></i>
+						{{__('settings.create')}}
+					</button>
+				</div>
+
+				<p ng-show="device.users.length < 1">
+					<span>{{__('settings.no_users')}}</span>
+				</p>
+
+				<ul class="users" ng-show="device.users.length > 0">
+					<li
+						class="user"
+						ng-repeat="user in device.users"
+					>
+
+						<i class="icon fa fa-user" aria-hidden="true"></i>
+
+						<div ng-show="!user.updating" class="name" ng-dblclick="user.updating = true;">{{user.data.name}}</div>
+						<input ng-show="user.updating" class="name" type="text" ng-model="user.data.name" ng-enter="updateUser( device, user )" />
+
+						<div class="buttons">
+							<button class="remove" ng-click="deleteUser( device, user )"><i class="fa fa-trash-o"></i> {{__('settings.delete')}}</button>
+						</div>
+
+					</li>
+				</ul>
+
+			</li>
+		</ul>
+
+		<script type="text/javascript">
+		angular.module('fingerprintApp', [])
+			.controller("fingerprintCtrl", [ '$scope', '$rootScope', '$timeout', function($scope, $rootScope, $timeout) {
+
+				$scope.devices = [];
+
+				$scope.$on('ready', function(){
+					$scope.__ = window.__;
+					updateDevices();
+				});
+
+				$scope.createUser = function( device ) {
+
+					Homey.alert( __('settings.info_createuser'), 'info' );
+
+					Homey.api('POST', '/device/' + device.id + '/user', undefined, function(err, result){
+						if( err) return Homey.alert( err.message || err.toString(), 'error' );
+						updateDevices();
+					})
+				}
+
+				$scope.updateUser = function( device, user ) {
+
+					user.updating = false;
+
+					Homey.api('PUT', '/device/' + device.id + '/user/' + user.id, user.data, function(err, result){
+						if( err) return Homey.alert( err.message || err.toString(), 'error' );
+					})
+				}
+
+				$scope.deleteUser = function( device, user ){
+					Homey.confirm( __('settings.confirm_delete'), 'warning', function( err, yes ){
+						if( !yes ) return;
+						Homey.api('DELETE', '/device/' + device.id + '/user/' + user.id, function(err, result){
+							if( err) return Homey.alert( err.message || err.toString(), 'error' );
+							updateDevices();
+						})
+					})
+				}
+
+			}])
+			.directive('ngEnter', function() {
+				return function(scope, element, attrs) {
+					element.bind('keydown keypress', function(event) {
+						if (event.which === 13) {
+							scope.$apply(function() {
+								scope.$eval(attrs.ngEnter || attrs.ngClick, {
+									$event: event
+								});
+							});
+							event.preventDefault();
+						}
+					});
+				};
+			});
+
+
+		function onHomeyReady(){
+			var scope = angular.element( document.body ).scope();
+				scope.$emit('ready');
+
+			Homey.ready();
+		}
+
+		function updateDevices() {
+			Homey.api('GET', '/device', function( err, result ){
+				var scope = angular.element( document.body ).scope();
+				scope.devices = result;
+				scope.$apply();
+			});
+		}
+		</script>
+
+	</body>
+</html>
