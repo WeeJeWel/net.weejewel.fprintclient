@@ -3,7 +3,7 @@
     "name": {
         "en": "Fingerprint Client"
     },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "compatibility": "0.x || 1.x",
     "author": {
         "name": "Emile Nijssen",
@@ -77,6 +77,23 @@
 						    "en": "John Smith"
 					    }
 				    }
+			    ]
+		    },
+		    {
+			    "id": "identify_specific",
+			    "title": {
+				    "en": "A user has been identified"
+			    },
+			    "args": [
+					{
+						"name": "device",
+						"type": "device",
+						"filter": "driver_id=fprint-server"
+					},
+					{
+						"name": "user",
+						"type": "autocomplete"
+					}
 			    ]
 		    }
 	    ]

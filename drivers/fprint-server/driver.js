@@ -9,6 +9,33 @@ var devices = [];
 function init( devices_data, callback ) {
 	devices_data.forEach(_initDevice);
 	callback();
+
+	Homey.manager('flow').on('trigger.identify_specific.user.autocomplete', function( callback, args ) {
+
+		let device = _getDevice( args.args.device );
+		if( device instanceof Error ) return callback( device );
+
+		var result = [];
+		device.users.forEach(( user ) => {
+			result.push({
+				id: user.id,
+				name: user.data.name
+			})
+		});
+
+		result = result.filter(( resultItem ) => {
+			return resultItem
+				.name
+				.toLowerCase()
+				.indexOf( args.query.toLowerCase() ) > -1
+		});
+
+		callback( null, result );
+	})
+
+	Homey.manager('flow').on('trigger.identify_specific', function( callback, args, state ) {
+		callback( null, args.user.id === state.userId );
+	});
 }
 
 function _getDevice( device_data ) {
@@ -47,6 +74,9 @@ function _initDevice( device_data ) {
 				.on('identify', ( userId, userData ) => {
 					console.log('onIdentify', userId, userData)
 					Homey.manager('flow').triggerDevice( 'identify', { name: userData.name }, null, device_data, ( err ) => {
+						if( err ) return console.error( err );
+					})
+					Homey.manager('flow').triggerDevice( 'identify_specific', { name: userData.name }, { userId: userId }, device_data, ( err ) => {
 						if( err ) return console.error( err );
 					})
 				})
