@@ -9,6 +9,14 @@
         "name": "Emile Nijssen",
         "email": "emile@athom.nl"
     },
+    "contributing": {
+        "donate": {
+            "paypal": {
+                "email": "emilenijssen@gmail.com",
+                "currency": "EUR"
+            }
+        }
+    },
     "category": [ "security" ],
     "description": "Connect Homey to node-fprint-server",
     "images": {
