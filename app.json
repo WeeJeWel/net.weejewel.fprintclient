@@ -3,7 +3,7 @@
     "name": {
         "en": "Fingerprint Client"
     },
-    "version": "1.0.1",
+    "version": "1.0.2",
     "compatibility": "0.x || 1.x",
     "author": {
         "name": "Emile Nijssen",
