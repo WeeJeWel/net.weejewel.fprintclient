@@ -1,14 +1,14 @@
 {
-	"not_connected": "Not connected",
-	"newuser": "New User",
-	"settings": {
-		"title_devices": "Devices",
-		"title_users": "Users",
-		"no_devices": "You don't have any devices yet.",
-		"no_users": "This device doesn't have any users yet.",
-		"create": "Add user",
-		"delete": "Remove",
-		"confirm_delete": "Are you sure you want to remove this user?",
-		"info_createuser": "Place your finger on the Fingerprint Reader."
-	}
+  "not_connected": "Not connected",
+  "newuser": "New User",
+  "settings": {
+    "title_devices": "Devices",
+    "title_users": "Users",
+    "no_devices": "You don't have any devices yet.",
+    "no_users": "This device doesn't have any users yet.",
+    "create": "Add user",
+    "delete": "Remove",
+    "confirm_delete": "Are you sure you want to remove this user?",
+    "info_createuser": "Place your finger on the Fingerprint Reader."
+  }
 }
