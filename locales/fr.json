@@ -1,0 +1,14 @@
+{
+  "not_connected": "Niet verbonden",
+  "newuser": "Nieuwe Gebruiker",
+  "settings": {
+    "title_devices": "Apparaten",
+    "title_users": "Gebruikers",
+    "no_devices": "Je hebt nog geen apparaten.",
+    "no_users": "Dit apparaat heeft nog geen gebruikers.",
+    "create": "Nieuwe Gebruiker",
+    "delete": "Verwijderen",
+    "confirm_delete": "Weet je zeker dat je deze gebruiker wil verwijderen?",
+    "info_createuser": "Plaats uw vinger op de vingerafdruklezer. 123"
+  }
+}
